@@ -2,6 +2,10 @@
 
 这几个概念来源于函数式编程的两个核心抽象：**Functor** 和 **Monad**。
 
+Map/Bind : **Functional Programming**
+
+Select/SelectMany : **LINQ**
+
 ## 1. Map 与 Select（Functor）
 
 ```
@@ -196,3 +200,4 @@ var res3 = o1.Bind(a1 =>
 });
 res3.AsIterable().Iter(v => Console.WriteLine(v));
 ```
+
