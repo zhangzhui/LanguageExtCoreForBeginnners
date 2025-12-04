@@ -113,7 +113,7 @@ public static Option<B> operator >> (K<Option, A> ma, Func<A, K<Option, B>> f) =
     +ma.Bind(f);
 ```
 
-## 7. Summary (Use an example to explain the concepts)
+## 7. Summary1 (Use an example to explain the concepts)
 ```csharp
 var o1 = Option<int>.Some(1);
 var o2 = Option<int>.Some(2);
@@ -146,4 +146,53 @@ var res2 = o1.Bind(a1 =>
     });
 });
 Console.WriteLine($"Bind: {res2}");
+
+```
+
+## 8. Summary2 (Use different monad)
+```csharp
+var o1 = Option<int>.Some(1);
+var e2 = Either<string, int>.Right(2);
+var o3 = Option<int>.Some(3);
+
+
+// syntactic sugar: SelectMany
+var res1 = from a1 in o1
+           from a2 in e2
+           from a3 in o3
+           select a1 + a2 + a3;
+res1.AsIterable().Iter(v => Console.WriteLine(v));
+
+// use SelectMany, better than Bind
+var res2 = o1.SelectMany(a1 => e2.ToOption(), (a1, a2) => a1 + a2)
+             .SelectMany(prev => o3, (prev, a3) => prev + a3);
+Console.WriteLine(res2);
+
+// all lift to Iterable
+// think of use Bind version
+// 
+var res22 = o1.SelectMany(a1 => e2.ToIterable(), (a1, a2) => a1 + a2)
+              .SelectMany(prev => o3.ToIterable(), (prev, a3) => prev + a3);
+res22.AsIterable().Iter(v => Console.WriteLine(v));
+
+
+// use bind like a hell
+var res3 = o1.Bind(a1 =>
+{
+    return e2.Bind(a2 =>
+    {
+        return o3.Bind(a3 =>
+        {
+            // here returns an Iterable
+            // otherwise it must use ToEither
+            // and outside must use ToOption
+            // 
+            // I'm a lazy person.
+            // I don't like so much work to do
+            //
+            return Seq(a1 + a2 + a3);
+        });
+    });
+});
+res3.AsIterable().Iter(v => Console.WriteLine(v));
 ```
