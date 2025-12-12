@@ -42,7 +42,7 @@ public static void Main()
 
 ## 方法二：使用 `Eff<RT, A>`（带运行时依赖）
 
-如果需要更好的可测试性：
+如果需要更好的`可测试性`：
 
 ```csharp
 // 定义 Trait
@@ -89,3 +89,4 @@ Eff<RT, Unit> ProcessPpt<RT>(string inputPath, string keyword, string outputPath
 2. **可推理**：核心逻辑是纯函数
 3. **可组合**：可以自由组合、retry、并行化
 4. **延迟执行**：可以在执行前分析/优化
+
