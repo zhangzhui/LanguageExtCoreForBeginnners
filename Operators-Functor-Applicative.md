@@ -13,6 +13,10 @@ language-ext 使用 **`*` 操作符** 作为语法糖，对应 Haskell 中的 `<
 | `*>` / `>>` | `>>>` | Applicative sequence (丢弃左边结果) |
 
 ---
+## 下面的用法基本上都是错误的
+*Option根本不是一个Lazy evaluation*
+
+---
 
 ## 用法示例
 
@@ -62,3 +66,4 @@ C# 的操作符重载限制较多，不能自定义 `<$>` 或 `<*>` 这样的符
 
 - Functor 操作符：`LanguageExt.Core/Traits/Functor/Functor.Operators.cs`
 - Applicative 操作符：`LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs`
+
