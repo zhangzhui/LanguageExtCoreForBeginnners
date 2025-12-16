@@ -13,8 +13,7 @@ language-ext 使用 **`*` 操作符** 作为语法糖，对应 Haskell 中的 `<
 | `*>` / `>>` | `>>>` | Applicative sequence (丢弃左边结果) |
 
 ---
-## 下面的用法基本上都是错误的
-*Option根本不是一个Lazy evaluation*
+## `operator *`不知道为什么报错
 
 ---
 
@@ -26,10 +25,10 @@ language-ext 使用 **`*` 操作符** 作为语法糖，对应 Haskell 中的 `<
 // Haskell: (+1) <$> Just 5
 // language-ext:
 Func<int, int> addOne = x => x + 1;
-Option<int> result = addOne * Some(5);  // Some(6)
+//Option<int> result = addOne * Some(5);  // Some(6)
+Option<int> result = Some(addOne).Apply(Some(5)); // Some(6)
+Option<int> result1 = map(addOne, Some(5)); // Some(6)
 
-// 也可以反过来
-Option<int> result2 = Some(5) * addOne;  // Some(6)
 ```
 
 ### Applicative apply (`*` = `<*>`)
@@ -38,7 +37,9 @@ Option<int> result2 = Some(5) * addOne;  // Some(6)
 // Haskell: Just (+) <*> Just 1 <*> Just 2
 // language-ext:
 Func<int, int, int> add = (a, b) => a + b;
-Option<int> result = add * Some(1) * Some(2);  // Some(3)
+//Option<int> result = add * Some(1) * Some(2);  // Some(3)
+Option<int> result = Some(add).Apply(Some(1)).Apply(Some(2));
+Option<int> result = map(add, Some(1)).Apply(Some(2));
 ```
 
 ### Applicative sequence (`>>>` = `*>`)
@@ -66,4 +67,5 @@ C# 的操作符重载限制较多，不能自定义 `<$>` 或 `<*>` 这样的符
 
 - Functor 操作符：`LanguageExt.Core/Traits/Functor/Functor.Operators.cs`
 - Applicative 操作符：`LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs`
+
 
