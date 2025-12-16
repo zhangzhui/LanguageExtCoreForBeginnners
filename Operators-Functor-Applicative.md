@@ -13,7 +13,44 @@ language-ext 使用 **`*` 操作符** 作为语法糖，对应 Haskell 中的 `<
 | `*>` / `>>` | `>>>` | Applicative sequence (丢弃左边结果) |
 
 ---
-## `operator *`不知道为什么报错
+## `operator *` ~~不知道为什么报错~~  需要更新下LanguageExt.Core
+
+下面是各个文件的列表，最近才支持的
+
+ReaderT.Operators.Applicative.cs
+
+Reader.Operators.Applicative.cs
+
+Free.Operators.Applicative.cs
+
+ValidationT.Operators.Applicative.cs
+
+Validation.Operators.Applicative.cs
+
+TryT.Operators.Applicative.cs
+
+Try.Operators.Applicative.cs
+
+OptionT.Operators.Applicative.cs
+
+Option.Operators.Applicative.cs
+
+FinT.Operators.Applicative.cs
+
+Fin.Operators.Applicative.cs
+
+EitherT.Operators.Applicative.cs
+
+Either.Operators.Applicative.cs
+
+ChronicleT.Operators.Applicative.cs
+
+IO.Operators.Applicative.cs
+
+Eff.Operators.Applicative.cs
+
+Eff.Operators.Applicative.cs
+
 
 ---
 
@@ -25,7 +62,7 @@ language-ext 使用 **`*` 操作符** 作为语法糖，对应 Haskell 中的 `<
 // Haskell: (+1) <$> Just 5
 // language-ext:
 Func<int, int> addOne = x => x + 1;
-//Option<int> result = addOne * Some(5);  // Some(6)
+Option<int> result = Some(addOne) * Some(5);  // Some(6)
 Option<int> result = Some(addOne).Apply(Some(5)); // Some(6)
 Option<int> result1 = map(addOne, Some(5)); // Some(6)
 
@@ -37,7 +74,7 @@ Option<int> result1 = map(addOne, Some(5)); // Some(6)
 // Haskell: Just (+) <*> Just 1 <*> Just 2
 // language-ext:
 Func<int, int, int> add = (a, b) => a + b;
-//Option<int> result = add * Some(1) * Some(2);  // Some(3)
+Option<int> result = Some(add) * Some(1) * Some(2);  // Some(3)
 Option<int> result = Some(add).Apply(Some(1)).Apply(Some(2));
 Option<int> result = map(add, Some(1)).Apply(Some(2));
 ```
@@ -67,5 +104,6 @@ C# 的操作符重载限制较多，不能自定义 `<$>` 或 `<*>` 这样的符
 
 - Functor 操作符：`LanguageExt.Core/Traits/Functor/Functor.Operators.cs`
 - Applicative 操作符：`LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs`
+
 
 
