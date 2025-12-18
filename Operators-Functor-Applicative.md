@@ -56,6 +56,67 @@ Eff.Operators.Applicative.cs
 
 ## 用法示例
 
+```csharp
+public static IO<int> ValueA() =>
+    liftIO(async () =>
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        return 10;
+    });
+
+public static IO<int> ValueB() =>
+    liftIO(async () =>
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        return 10;
+    });
+
+public static int AddValues(int a, int b)
+{
+    return a + b;
+}
+
+Console.WriteLine("start");
+
+
+{
+    Console.WriteLine("Example1: function call");
+    var sw = new Stopwatch();
+    sw.Start();
+    Console.WriteLine(Utils.AddValues(10, 20));
+    sw.Stop();
+    Console.WriteLine($"total ms : {sw.Elapsed.TotalMilliseconds}"); // output 1ms
+}
+
+
+{
+    Console.WriteLine("\n\nExample2: monad");
+    var sw = new Stopwatch();
+    sw.Start();
+    var defferRes = from a in Utils.ValueA()
+                    from b in Utils.ValueB()
+                    select a + b;
+    Console.WriteLine(defferRes.Run());
+    sw.Stop();
+    Console.WriteLine($"total ms : {sw.Elapsed.TotalMilliseconds}"); // output 2007ms
+}
+
+
+{
+    Console.WriteLine("\n\nExample3: applicative");
+    var sw = new Stopwatch();
+    sw.Start();
+    var defferRes = IO.pure(Utils.AddValues) * Utils.ValueA() * Utils.ValueB();
+    Console.WriteLine(defferRes.Run());
+    sw.Stop();
+    Console.WriteLine($"total ms : {sw.Elapsed.TotalMilliseconds}"); // output 1019 ms
+}
+
+
+Console.WriteLine("end");
+
+```
+
 ### Functor map (`*` = `<$>`)
 
 ```csharp
@@ -104,6 +165,7 @@ C# 的操作符重载限制较多，不能自定义 `<$>` 或 `<*>` 这样的符
 
 - Functor 操作符：`LanguageExt.Core/Traits/Functor/Functor.Operators.cs`
 - Applicative 操作符：`LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs`
+
 
 
 
