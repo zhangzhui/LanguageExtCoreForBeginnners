@@ -87,9 +87,9 @@ var user2 = new User("Bob", None);
 emailPrism.Get(user1);  // Some("alice@example.com")
 emailPrism.Get(user2);  // None
 
-// Set 操作 - 只有当原值存在时才更新
+// Set 操作 - 原值存在时创建一个新值
 emailPrism.Set("new@example.com", user1);  // Email 被更新
-emailPrism.Set("new@example.com", user2);  // 保持 None（不创建新值）
+emailPrism.Set("new@example.com", user2);  // 创建新值
 ```
 
 ### 场景 2: 处理联合类型 (Either/Sum Types)
@@ -165,7 +165,7 @@ var prism = Prism<S, A>.New(
 // Get - 尝试获取值
 Option<A> value = prism.Get(source);
 
-// Set - 尝试设置值（仅当目标存在）
+// Set - 当目标不存在时创建新值
 S newSource = prism.Set(newValue, source);
 ```
 
