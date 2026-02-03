@@ -1,5 +1,13 @@
 # MVU (Model-View-Update) 与 FP (函数式编程) 设计理念
 
+考虑下HTML Canvas就什么都明白了，因为：
+
+1. 首先：你不能从Canvas中保存任何数据
+2. 所以：需要你自己定义model，然后根据事件更改model
+3. 最后：根据model将结果绘制到view上
+
+---
+
 MVU (Model-View-Update) 架构结合 FP (函数式编程) 是现代前端和 GUI 开发中非常流行且强大的组合（比如 React 的 Redux 模式, Elm 语言, 以及 C# 的 Elmish）。
 
 为了让你“通俗易懂”且“方便记忆”，我们可以用一个核心隐喻贯穿始终：**老式胶片电影（或定格动画）**。
