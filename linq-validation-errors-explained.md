@@ -84,15 +84,15 @@ using LanguageExt;
 using static LanguageExt.Prelude;
 
 // 定义验证
-Validation<string, int> validateAge(int age) =>
+Validation<Seq<string>, int> validateAge(int age) =>
     age >= 0 && age <= 150
         ? Success<string, int>(age)
-        : Fail<string, int>("年龄必须在 0 到 150 之间");
+        : Fail<Seq<string>, int>(Seq("年龄必须在 0 到 150 之间"));
 
-Validation<string, string> validateName(string name) =>
+Validation<Seq<string>, string> validateName(string name) =>
     !string.IsNullOrWhiteSpace(name)
         ? Success<string, string>(name)
-        : Fail<string, string>("姓名不能为空");
+        : Fail<Seq<string>, string>(Seq("姓名不能为空"));
 
 // 使用 Apply 同时收集所有错误
 var result =
@@ -105,7 +105,7 @@ var result =
 ### 3.2 使用 `Map` 进行单值转换
 
 ```csharp
-Validation<string, int> validated = validateAge(25);
+Validation<Seq<string>, int> validated = validateAge(25);
 
 var mapped = validated.Map(age => age * 2);
 // Success(50)
@@ -132,10 +132,10 @@ var message = result.Match(
 ```csharp
 record UserInput(string Name, int Age, string Email);
 
-Validation<string, string> validateEmail(string email) =>
+Validation<Seq<string>, string> validateEmail(string email) =>
     email.Contains("@")
         ? Success<string, string>(email)
-        : Fail<string, string>("邮箱格式不正确");
+        : Fail<Seq<string>, string>(Seq("邮箱格式不正确"));
 
 // 同时验证所有字段，收集全部错误
 var result =
